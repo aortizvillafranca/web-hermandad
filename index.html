@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +21,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- Firebase SDKs (Versión Compat para garantizar 'firebase' global) -->
+    <!-- Firebase SDKs (Versión Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
@@ -28,48 +29,21 @@
     <style>
         h1, h2, h3, h4, .font-serif { font-family: 'Cinzel', serif; }
         body { font-family: 'Lato', sans-serif; }
-
         .bg-cofrade-blue { background-color: #1e3a8a; }
-        
-        /* --- AQUÍ PUEDES CAMBIAR EL COLOR DORADO PERSONALIZADO --- */
         .text-cofrade-gold { color: #d4af37; }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
         .hero-bg {
             background-image: linear-gradient(rgba(30, 58, 138, 0.7), rgba(30, 58, 138, 0.5)), url('https://images.unsplash.com/photo-1548625361-ec8150406d4e?q=80&w=1920&auto=format&fit=crop');
-            background-attachment: fixed;
-            background-position: center;
-            background-size: cover;
+            background-attachment: fixed; background-position: center; background-size: cover;
         }
-
-        /* Utilidades admin */
-        .admin-panel {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            z-index: 100;
-            overflow-y: auto;
-        }
-        .admin-visible {
-            display: block;
-        }
+        .admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); z-index: 100; overflow-y: auto; }
+        .admin-visible { display: block; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
-<!-- --- AQUÍ SE DEFINE EL COLOR DE TEXTO GENERAL (text-gray-800) --- -->
-<!-- Cámbialo por text-black, text-slate-600, etc. -->
 <body class="bg-slate-50 text-gray-800 transition-all duration-300" id="main-body">
 
     <!-- Navegación -->
@@ -77,11 +51,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="#inicio" class="flex items-center group">
-                    <!-- AQUÍ PUEDES PONER TU PROPIO LOGO CAMBIANDO EL "src" -->
                     <img src="https://scontent-mad1-1.xx.fbcdn.net/v/t39.30808-6/348242588_1406426463542253_7160709393712150061_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=hhRKNs_VRVYQ7kNvwGl-QGr&_nc_oc=Adl72oHVZiFGbmTCYOU63QThAAVOFt1CHO1Ua9yCTb-mQKcAKE-bQf54hPYlwN1liPA&_nc_zt=23&_nc_ht=scontent-mad1-1.xx&_nc_gid=ksPgJA1jYka0gLVfxvZiLA&oh=00_Afm-3fiV-lnV7EK-XRpa732uWNqBumft02Q0M8s1RgGD2A&oe=6944B827" class="h-10 w-auto mr-3 group-hover:scale-110 transition-transform" alt="Escudo Hermandad">
-                    
                     <div class="flex flex-col">
-                        <!-- COLOR DEL TÍTULO DE LA BARRA (text-blue-900) -->
                         <span class="font-serif text-xl font-bold text-blue-900 tracking-wide">LA PURÍSIMA CONCEPCION</span>
                         <span class="text-xs text-gray-500 uppercase tracking-wider">Patrona de Puente Genil</span>
                     </div>
@@ -93,18 +64,14 @@
                     <a href="#agenda" class="text-gray-600 hover:text-blue-900 transition scroll-smooth">CULTOS</a>
                     <a href="#itinerario" class="text-gray-600 hover:text-blue-900 transition scroll-smooth">ITINERARIO</a>
                     <a href="#secretaria" class="text-gray-600 hover:text-blue-900 transition scroll-smooth">SECRETARÍA</a>
-                    <button onclick="openModal()" class="bg-blue-900 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg border border-transparent hover:border-yellow-500">
-                        HACERSE HERMANO
-                    </button>
+                    <button onclick="openModal()" class="bg-blue-900 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg border border-transparent hover:border-yellow-500">HACERSE HERMANO</button>
                 </div>
                 
-                <!-- Botón móvil -->
                 <div class="xl:hidden flex items-center">
                     <button id="mobile-menu-btn" class="text-gray-700 hover:text-blue-900"><i data-lucide="menu" class="h-8 w-8"></i></button>
                 </div>
             </div>
         </div>
-        <!-- Menú Móvil -->
         <div id="mobile-menu" class="hidden xl:hidden bg-white border-t">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#inicio" onclick="toggleMobileMenu()" class="block px-3 py-2 text-blue-900 font-medium hover:bg-gray-100 rounded">Inicio</a>
@@ -151,7 +118,7 @@
         </div>
     </section>
 
-    <!-- La Titular (Grid de Fotos) -->
+    <!-- La Titular -->
     <section id="titular" class="py-16 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-10 fade-in">
@@ -175,15 +142,14 @@
                     <li class="relative"><span class="absolute -left-[33px] top-1 bg-blue-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">1</span><h4 class="font-bold text-blue-900">17:00 - Salida (Parroquia de la Purificacion)</h4></li>
                     <li class="relative"><span class="absolute -left-[33px] top-1 bg-white border-2 border-blue-900 text-blue-900 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</span><h4 class="font-bold text-blue-900">18:30 - Don Gonzalo</h4></li>
                     <li class="relative"><span class="absolute -left-[33px] top-1 bg-white border-2 border-blue-900 text-blue-900 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</span><h4 class="font-bold text-blue-900">19:30 - Romeral</h4></li>
-                    <li class="relative"><span class="absolute -left-[33px] top-1 bg-amber-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">4</span><h4 class="font-bold text-blue-900">20:30 -Encierro </h4></li>
-
+                    <li class="relative"><span class="absolute -left-[33px] top-1 bg-amber-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">4</span><h4 class="font-bold text-blue-900">20:30 - Encierro</h4></li>
                 </ul>
             </div>
             <div id="mapa-procesion" class="md:col-span-2 h-[400px] bg-slate-100 rounded-xl overflow-hidden shadow-lg z-0"></div>
         </div>
     </section>
 
-    <!-- Agenda y Cultos (Dinámica) -->
+    <!-- Agenda -->
     <section id="agenda" class="py-20 bg-cofrade-blue text-white relative">
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="text-center mb-12 fade-in">
@@ -191,13 +157,12 @@
                 <p class="text-blue-200">Eventos actualizados en tiempo real.</p>
             </div>
             <div id="agenda-container" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Se llenará con JS -->
                 <div class="text-center w-full col-span-2 text-blue-300 italic">Cargando eventos...</div>
             </div>
         </div>
     </section>
 
-    <!-- Secretaría y Caridad -->
+    <!-- Secretaría y Tienda -->
     <section id="secretaria" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="font-serif text-3xl text-blue-900 mb-8 text-center border-b pb-4">Secretaría y Caridad</h2>
@@ -216,7 +181,7 @@
                     <div class="flex justify-between text-sm mb-2"><span>Campaña Navidad</span><span class="font-bold text-green-600">Activa</span></div>
                     <button class="w-full bg-red-600 text-white py-2 rounded text-sm hover:bg-red-700">Donar (Bizum)</button>
                 </div>
-                <!-- Tienda (Modificado) -->
+                <!-- Tienda -->
                 <div class="bg-slate-50 p-6 rounded-lg shadow border-t-4 border-amber-500 relative group overflow-hidden">
                     <div class="absolute inset-0 bg-amber-500 opacity-0 group-hover:opacity-5 transition duration-300 z-0"></div>
                     <div class="relative z-10">
@@ -255,16 +220,12 @@
     </footer>
 
     <!-- MODALES Y PANELES -->
-
-    <!-- Panel de Administración (Secretaría) -->
     <div id="admin-panel" class="admin-panel bg-slate-100">
         <div class="bg-blue-900 text-white px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
             <h2 class="text-xl font-serif font-bold">Panel de Gobierno | Secretaría Virtual</h2>
             <button onclick="logoutAdmin()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-sm font-bold">Cerrar Sesión</button>
         </div>
-        
         <div class="max-w-7xl mx-auto px-4 py-8">
-            <!-- Pestañas -->
             <div class="flex space-x-4 mb-8 border-b border-gray-300 pb-2 overflow-x-auto">
                 <button onclick="showAdminTab('solicitudes')" id="tab-solicitudes" class="text-blue-900 font-bold border-b-4 border-blue-900 pb-1 px-2">Solicitudes</button>
                 <button onclick="showAdminTab('agenda')" id="tab-agenda" class="text-gray-500 hover:text-blue-900 font-bold pb-1 px-2">Agenda</button>
@@ -274,20 +235,16 @@
             <!-- Tab Solicitudes -->
             <div id="admin-solicitudes" class="space-y-6">
                 <div class="bg-white p-6 rounded-lg shadow overflow-x-auto">
-                    <h3 class="text-lg font-bold mb-4 text-gray-700">Nuevas Solicitudes Recibidas</h3>
+                    <h3 class="text-lg font-bold mb-4 text-gray-700">Nuevas Solicitudes</h3>
                     <table class="min-w-full leading-normal">
-                        <thead>
-                            <tr>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Fecha</th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nombre</th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Contacto</th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tipo</th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="solicitudes-table-body">
-                            <!-- JS render -->
-                        </tbody>
+                        <thead><tr>
+                            <th class="px-5 py-3 border-b-2 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase">Fecha</th>
+                            <th class="px-5 py-3 border-b-2 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase">Nombre</th>
+                            <th class="px-5 py-3 border-b-2 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase">Contacto</th>
+                            <th class="px-5 py-3 border-b-2 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase">Tipo</th>
+                            <th class="px-5 py-3 border-b-2 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase">Acciones</th>
+                        </tr></thead>
+                        <tbody id="solicitudes-table-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -295,158 +252,101 @@
             <!-- Tab Agenda -->
             <div id="admin-agenda" class="hidden space-y-6">
                 <div class="bg-white p-6 rounded-lg shadow mb-6">
-                    <h3 class="text-lg font-bold mb-4 text-gray-700">Añadir Nuevo Evento</h3>
+                    <h3 class="text-lg font-bold mb-4 text-gray-700">Añadir Evento</h3>
                     <form onsubmit="addEvent(event)" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <input id="evt-date" type="text" placeholder="Día (Ej: 08)" class="border p-2 rounded" required>
                         <input id="evt-month" type="text" placeholder="Mes (Ej: Dic)" class="border p-2 rounded" required>
-                        <input id="evt-title" type="text" placeholder="Título (Ej: Misa)" class="border p-2 rounded md:col-span-2" required>
+                        <input id="evt-title" type="text" placeholder="Título" class="border p-2 rounded md:col-span-2" required>
                         <input id="evt-desc" type="text" placeholder="Descripción" class="border p-2 rounded md:col-span-4" required>
                         <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded font-bold hover:bg-green-700 md:col-start-4">Publicar</button>
                     </form>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-bold mb-4 text-gray-700">Eventos Publicados</h3>
-                    <ul id="admin-agenda-list" class="space-y-2">
-                        <!-- JS render -->
-                    </ul>
-                </div>
+                <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-lg font-bold mb-4 text-gray-700">Eventos Publicados</h3><ul id="admin-agenda-list" class="space-y-2"></ul></div>
             </div>
 
-             <!-- Tab Tienda (NUEVO) -->
+             <!-- Tab Tienda -->
              <div id="admin-tienda" class="hidden space-y-6">
                 <div class="bg-white p-6 rounded-lg shadow mb-6">
                     <h3 class="text-lg font-bold mb-4 text-gray-700">Añadir Artículo a Recuerdos</h3>
                     <form onsubmit="addShopItem(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input id="shop-name" type="text" placeholder="Nombre (Ej: Medalla Corporativa)" class="border p-2 rounded" required>
+                        <input id="shop-name" type="text" placeholder="Nombre" class="border p-2 rounded" required>
                         <input id="shop-price" type="number" step="0.01" placeholder="Precio (€)" class="border p-2 rounded" required>
-                        <input id="shop-img" type="url" placeholder="URL de la imagen (https://...)" class="border p-2 rounded md:col-span-2" required>
-                        <div class="flex items-center space-x-2 md:col-span-2">
-                             <input type="checkbox" id="shop-stock" checked class="w-4 h-4 text-blue-900 rounded">
-                             <label for="shop-stock" class="text-sm text-gray-700">Disponible (En Stock)</label>
-                        </div>
-                        <button type="submit" class="bg-amber-500 text-white py-2 px-4 rounded font-bold hover:bg-amber-600 md:col-span-2">Añadir al Catálogo</button>
+                        <input id="shop-img" type="url" placeholder="URL imagen" class="border p-2 rounded md:col-span-2" required>
+                        <div class="flex items-center space-x-2 md:col-span-2"><input type="checkbox" id="shop-stock" checked class="w-4 h-4"><label for="shop-stock">Disponible</label></div>
+                        <button type="submit" class="bg-amber-500 text-white py-2 px-4 rounded font-bold hover:bg-amber-600 md:col-span-2">Añadir</button>
                     </form>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-bold mb-4 text-gray-700">Catálogo Actual</h3>
-                    <div id="admin-shop-list" class="grid grid-cols-1 gap-4">
-                        <!-- JS Render -->
-                    </div>
-                </div>
+                <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-lg font-bold mb-4 text-gray-700">Catálogo Actual</h3><div id="admin-shop-list" class="grid grid-cols-1 gap-4"></div></div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Formulario Público -->
+    <!-- Modales -->
     <div id="modal-hermano" class="fixed inset-0 z-[60] hidden overflow-y-auto">
         <div class="fixed inset-0 bg-gray-900 bg-opacity-75 backdrop-blur-sm" onclick="closeModal()"></div>
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-lg z-50 relative">
-                <div class="bg-blue-900 px-4 py-3 flex justify-between items-center text-white">
-                    <h3 class="font-serif font-bold">Solicitud de Ingreso / Contacto</h3>
-                    <button onclick="closeModal()"><i data-lucide="x"></i></button>
-                </div>
+                <div class="bg-blue-900 px-4 py-3 flex justify-between items-center text-white"><h3 class="font-serif font-bold">Solicitud</h3><button onclick="closeModal()"><i data-lucide="x"></i></button></div>
                 <div class="p-6">
                     <form onsubmit="submitForm(event)">
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Nombre Completo</label>
-                            <input id="form-name" class="border rounded w-full py-2 px-3 focus:ring-2 ring-blue-500 outline-none" type="text" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Teléfono / Email</label>
-                            <input id="form-contact" class="border rounded w-full py-2 px-3 focus:ring-2 ring-blue-500 outline-none" type="text" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Motivo</label>
-                            <select id="form-type" class="border rounded w-full py-2 px-3 outline-none">
-                                <option>Quiero ser Hermano</option>
-                                <option>Información Cuotas</option>
-                                <option>Donativo Caridad</option>
-                            </select>
-                        </div>
-                        <div class="flex justify-end">
-                            <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded shadow">Enviar Solicitud</button>
-                        </div>
+                        <div class="mb-4"><label class="block text-gray-700 text-sm font-bold mb-2">Nombre</label><input id="form-name" class="border rounded w-full py-2 px-3" type="text" required></div>
+                        <div class="mb-4"><label class="block text-gray-700 text-sm font-bold mb-2">Contacto</label><input id="form-contact" class="border rounded w-full py-2 px-3" type="text" required></div>
+                        <div class="mb-4"><label class="block text-gray-700 text-sm font-bold mb-2">Motivo</label><select id="form-type" class="border rounded w-full py-2 px-3"><option>Quiero ser Hermano</option><option>Información</option></select></div>
+                        <div class="flex justify-end"><button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded">Enviar</button></div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal CATÁLOGO (NUEVO) -->
     <div id="modal-shop" class="fixed inset-0 z-[70] hidden overflow-y-auto">
         <div class="fixed inset-0 bg-gray-900 bg-opacity-80 backdrop-blur-sm" onclick="closeShopModal()"></div>
         <div class="flex items-center justify-center min-h-screen px-4 py-8">
             <div class="bg-slate-50 rounded-xl shadow-2xl w-full max-w-4xl z-50 relative flex flex-col max-h-[90vh]">
-                <!-- Header Modal -->
                 <div class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center sticky top-0 rounded-t-xl z-10">
-                    <div>
-                        <h3 class="font-serif text-2xl font-bold text-blue-900">Tienda de Recuerdos</h3>
-                        <p class="text-sm text-gray-500">Disponibles en Casa Hermandad (C/ Fe, 12)</p>
-                    </div>
-                    <button onclick="closeShopModal()" class="bg-gray-100 hover:bg-gray-200 p-2 rounded-full transition"><i data-lucide="x" class="text-gray-600"></i></button>
+                    <div><h3 class="font-serif text-2xl font-bold text-blue-900">Tienda de Recuerdos</h3><p class="text-sm text-gray-500">Disponibles en Casa Hermandad</p></div>
+                    <button onclick="closeShopModal()" class="bg-gray-100 hover:bg-gray-200 p-2 rounded-full"><i data-lucide="x" class="text-gray-600"></i></button>
                 </div>
-                
-                <!-- Contenido Scrollable -->
-                <div class="p-6 overflow-y-auto custom-scrollbar">
-                    <div id="shop-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        <!-- JS Render Products -->
-                        <div class="col-span-full text-center py-12 text-gray-400">
-                            Cargando catálogo...
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer Modal -->
-                <div class="bg-gray-100 px-6 py-3 rounded-b-xl border-t border-gray-200 text-xs text-gray-500 text-center">
-                    Los beneficios de la venta de recuerdos se destinan al mantenimiento del culto y la caridad.
-                </div>
+                <div class="p-6 overflow-y-auto custom-scrollbar"><div id="shop-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"><div class="col-span-full text-center py-12 text-gray-400">Cargando...</div></div></div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Login Admin -->
     <div id="modal-login" class="fixed inset-0 z-[80] hidden flex items-center justify-center bg-gray-900 bg-opacity-90 backdrop-blur-sm">
         <div class="bg-white rounded-lg p-6 shadow-2xl w-full max-w-sm">
-            <h3 class="font-serif text-xl text-blue-900 mb-4 font-bold text-center">Acceso Junta de Gobierno</h3>
-            <p class="text-sm text-gray-500 mb-4 text-center">Introduce el código de seguridad (1650)</p>
-            <input type="password" id="login-pin" class="w-full border-2 border-gray-300 p-2 rounded mb-4 text-center text-lg tracking-widest focus:border-amber-500 outline-none" placeholder="PIN" onkeyup="if(event.key === 'Enter') checkLogin()">
+            <h3 class="font-serif text-xl text-blue-900 mb-4 font-bold text-center">Acceso Junta</h3>
+            <p class="text-sm text-gray-500 mb-4 text-center">Código de seguridad (1650)</p>
+            <input type="password" id="login-pin" class="w-full border-2 border-gray-300 p-2 rounded mb-4 text-center text-lg tracking-widest" placeholder="PIN" onkeyup="if(event.key === 'Enter') checkLogin()">
             <p id="login-error" class="text-red-500 text-xs text-center mb-4 hidden">Clave incorrecta</p>
-            <div class="flex justify-between">
-                <button onclick="closeLoginModal()" class="text-gray-500 hover:text-gray-700 font-bold py-2 px-4">Cancelar</button>
-                <button onclick="checkLogin()" class="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-6 rounded shadow">Entrar</button>
-            </div>
+            <div class="flex justify-between"><button onclick="closeLoginModal()" class="text-gray-500 font-bold">Cancelar</button><button onclick="checkLogin()" class="bg-blue-900 text-white font-bold py-2 px-6 rounded">Entrar</button></div>
         </div>
     </div>
 
-    <!-- Lightbox -->
-    <div id="lightbox" class="fixed inset-0 z-[70] hidden bg-black bg-opacity-95 flex items-center justify-center p-4" onclick="closeLightbox()">
-        <img id="lightbox-img" src="" class="max-h-[90vh] max-w-full rounded shadow-2xl border-4 border-white">
-    </div>
+    <div id="lightbox" class="fixed inset-0 z-[70] hidden bg-black bg-opacity-95 flex items-center justify-center p-4" onclick="closeLightbox()"><img id="lightbox-img" src="" class="max-h-[90vh] max-w-full rounded shadow-2xl border-4 border-white"></div>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // 1. CONFIGURACIÓN E INICIO FIREBASE
-        const firebaseConfig =  {
-              apiKey: "AIzaSyDWWnsHZDF-U0Gb3L93kSiORve22mUnuew",
-              authDomain: "cofradia-web-63f3c.firebaseapp.com",
-              projectId: "cofradia-web-63f3c",
-              storageBucket: "cofradia-web-63f3c.firebasestorage.app",
-              messagingSenderId: "819600967210",
-              appId: "1:819600967210:web:9794003d21c953552a2553"
-};
+        // --- PEGA AQUÍ TU CONFIGURACIÓN ---
+        // Borra lo de abajo y pega tu const firebaseConfig = { ... }
+        const firebaseConfig = {
+  apiKey: "AIzaSyDWWnsHZDF-U0Gb3L93kSiORve22mUnuew",
+  authDomain: "cofradia-web-63f3c.firebaseapp.com",
+  projectId: "cofradia-web-63f3c",
+  storageBucket: "cofradia-web-63f3c.firebasestorage.app",
+  messagingSenderId: "819600967210",
+  appId: "1:819600967210:web:9794003d21c953552a2553"
+        
+        // Inicialización
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore(app);
         
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
-
-        // 2. RUTAS
         const AGENDA_DOC_PATH = `artifacts/${appId}/public/data/agenda/main`;
         const SOLICITUDES_DOC_PATH = `artifacts/${appId}/public/data/solicitudes/main`;
-        const SHOP_DOC_PATH = `artifacts/${appId}/public/data/shop/main`; // Nueva ruta
+        const SHOP_DOC_PATH = `artifacts/${appId}/public/data/shop/main`;
 
-        // 3. AUTENTICACIÓN
+        // Auth
         async function initAuth() {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -454,323 +354,216 @@
                 } else {
                     await auth.signInAnonymously();
                 }
-                loadAgendaPublic();
-                // No cargamos tienda automáticamente hasta que se abre el modal para ahorrar recursos, o sí si queremos precarga
             } catch (error) {
-                console.error("Error en autenticación:", error);
+                console.error("Auth Error:", error);
+                // IMPORTANTE: Si sale esta alerta, es que falta activar Autenticación en Firebase Console
+                alert("Error de conexión: No se pudo iniciar sesión. Asegúrate de activar 'Anónimo' en Firebase Authentication.");
             }
         }
         initAuth();
 
-        // 4. LÓGICA DE DATOS
+        // Listeners
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                loadPublicData();
+                loadAdminData(); // Cargar también datos del admin si está abierto
+            }
+        });
 
-        // AGENDA
-        function loadAgendaPublic() {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    db.doc(AGENDA_DOC_PATH).onSnapshot((doc) => {
-                        const container = document.getElementById('agenda-container');
-                        if (doc.exists && doc.data().events && doc.data().events.length > 0) {
-                            const events = doc.data().events;
-                            container.innerHTML = events.map(evt => `
-                                <div class="bg-blue-800 bg-opacity-90 p-6 rounded-lg border border-blue-700 flex items-start space-x-4 hover:bg-blue-700 transition transform hover:-translate-y-1 shadow-lg">
-                                    <div class="bg-amber-500 text-blue-900 w-16 h-16 flex-shrink-0 flex flex-col items-center justify-center rounded font-bold shadow-lg border-2 border-blue-900">
-                                        <span class="text-2xl leading-none">${evt.date}</span>
-                                        <span class="text-xs uppercase">${evt.month}</span>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-serif text-xl font-bold text-white">${evt.title}</h3>
-                                        <p class="text-gray-200 text-sm mt-2">${evt.desc}</p>
-                                    </div>
-                                </div>
-                            `).join('');
-                        } else {
-                            seedAgenda();
-                        }
-                    }, error => console.error("Error cargando agenda:", error));
+        // Carga pública
+        function loadPublicData() {
+            db.doc(AGENDA_DOC_PATH).onSnapshot(doc => {
+                const c = document.getElementById('agenda-container');
+                if (doc.exists && doc.data().events?.length) {
+                    c.innerHTML = doc.data().events.map(e => `
+                        <div class="bg-blue-800 bg-opacity-90 p-6 rounded-lg border border-blue-700 flex items-start space-x-4 hover:bg-blue-700 transition transform hover:-translate-y-1 shadow-lg">
+                            <div class="bg-amber-500 text-blue-900 w-16 h-16 flex-shrink-0 flex flex-col items-center justify-center rounded font-bold shadow-lg border-2 border-blue-900"><span class="text-2xl leading-none">${e.date}</span><span class="text-xs uppercase">${e.month}</span></div>
+                            <div><h3 class="font-serif text-xl font-bold text-white">${e.title}</h3><p class="text-gray-200 text-sm mt-2">${e.desc}</p></div>
+                        </div>`).join('');
+                } else {
+                    c.innerHTML = '<div class="text-center w-full col-span-2 text-blue-300 italic">No hay cultos programados.</div>';
                 }
             });
         }
 
-        async function seedAgenda() {
+        // Carga Admin
+        function loadAdminData() {
+            if (!auth.currentUser) return;
+
+            // Solicitudes
+            db.doc(SOLICITUDES_DOC_PATH).onSnapshot(doc => {
+                const tbody = document.getElementById('solicitudes-table-body');
+                if (doc.exists && doc.data().list?.length) {
+                    tbody.innerHTML = doc.data().list.map(i => `<tr><td class="px-5 py-5 border-b bg-white text-sm">${i.date}</td><td class="px-5 py-5 border-b bg-white text-sm font-bold">${i.name}</td><td class="px-5 py-5 border-b bg-white text-sm">${i.contact}</td><td class="px-5 py-5 border-b bg-white text-sm"><span class="bg-blue-200 text-blue-900 py-1 px-3 rounded-full text-xs">${i.type}</span></td><td class="px-5 py-5 border-b bg-white text-sm"><button onclick="deleteSolicitud(${i.id})" class="text-red-600 font-bold">Borrar</button></td></tr>`).join('');
+                } else { tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500">Sin solicitudes.</td></tr>'; }
+            });
+
+            // Agenda List Admin
+            db.doc(AGENDA_DOC_PATH).onSnapshot(doc => {
+                const list = document.getElementById('admin-agenda-list');
+                if (doc.exists && doc.data().events) {
+                    list.innerHTML = doc.data().events.map((e, i) => `<li class="flex justify-between items-center bg-gray-50 p-3 rounded border"><span><strong>${e.date} ${e.month}</strong> - ${e.title}</span><button onclick="deleteEvent(${i})" class="text-red-500 font-bold px-2">X</button></li>`).join('');
+                }
+            });
+
+            // Shop List Admin
+            db.doc(SHOP_DOC_PATH).onSnapshot(doc => {
+                const list = document.getElementById('admin-shop-list');
+                if (doc.exists && doc.data().items) {
+                    list.innerHTML = doc.data().items.map((e, i) => `<div class="flex justify-between items-center bg-gray-50 p-3 rounded border"><div class="flex items-center space-x-3"><img src="${e.img}" class="w-10 h-10 object-cover rounded border"><div><p class="font-bold text-gray-800">${e.name}</p><p class="text-xs text-gray-500">${e.price}€</p></div></div><button onclick="deleteShopItem(${i})" class="text-red-500 font-bold px-2">Borrar</button></div>`).join('');
+                } else { list.innerHTML = '<p class="text-center text-gray-400">Sin productos.</p>'; }
+            });
+        }
+
+        // Acciones Admin (CON ERROR HANDLING)
+        async function addEvent(e) {
+            e.preventDefault();
             try {
-                await db.doc(AGENDA_DOC_PATH).set({
-                    events: [
-                        { date: '29', month: 'Nov', title: 'Inicio de la Novena', desc: '19:30 h - Santo Rosario en el Santuario.' },
-                        { date: '08', month: 'Dic', title: 'Función Principal', desc: '12:00 h - Misa Solemne y Procesión.' }
-                    ]
-                });
-            } catch(e) { console.log("Error seeding:", e); }
-        }
-
-        // TIENDA (PÚBLICA)
-        let shopUnsubscribe = null;
-        function openShopModal() {
-            const modal = document.getElementById('modal-shop');
-            if(modal) modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Bloquear scroll fondo
-            
-            // Usamos onAuthStateChanged para asegurar que tenemos usuario antes de pedir datos
-            const authUnsub = auth.onAuthStateChanged(user => {
-                if (user && !shopUnsubscribe) {
-                    // Suscribirse a cambios en tienda
-                    shopUnsubscribe = db.doc(SHOP_DOC_PATH).onSnapshot(doc => {
-                        const container = document.getElementById('shop-container');
-                        if (doc.exists && doc.data().items && doc.data().items.length > 0) {
-                            container.innerHTML = doc.data().items.map(item => `
-                                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition group">
-                                    <div class="h-48 bg-gray-100 overflow-hidden relative">
-                                        <img src="${item.img || 'https://via.placeholder.com/300?text=Sin+Imagen'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                                        ${!item.stock ? '<div class="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center"><span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">AGOTADO</span></div>' : ''}
-                                    </div>
-                                    <div class="p-4">
-                                        <h4 class="font-serif font-bold text-blue-900 mb-1 leading-tight">${item.name}</h4>
-                                        <div class="flex justify-between items-center mt-3">
-                                            <span class="text-amber-600 font-bold text-lg">${parseFloat(item.price).toFixed(2)} €</span>
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded border">${item.stock ? 'Disponible' : 'Sin Stock'}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('');
-                        } else {
-                            container.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500"><i data-lucide="package-open" class="mx-auto h-12 w-12 text-gray-300 mb-2"></i><p>No hay artículos disponibles actualmente.</p></div>';
-                            lucide.createIcons();
-                        }
-                    });
-                }
-            });
-        }
-
-        function closeShopModal() {
-            document.getElementById('modal-shop').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            if (shopUnsubscribe) {
-                shopUnsubscribe(); // Dejar de escuchar cambios
-                shopUnsubscribe = null;
+                const newEvent = {
+                    date: document.getElementById('evt-date').value,
+                    month: document.getElementById('evt-month').value,
+                    title: document.getElementById('evt-title').value,
+                    desc: document.getElementById('evt-desc').value,
+                };
+                await db.doc(AGENDA_DOC_PATH).set({ events: firebase.firestore.FieldValue.arrayUnion(newEvent) }, { merge: true });
+                e.target.reset();
+                alert("Evento publicado correctamente.");
+            } catch (err) {
+                console.error(err);
+                alert("Error al publicar: " + err.message + "\n\n(Revisa si activaste la Autenticación en Firebase)");
             }
         }
 
-        // FORMULARIO SOLICITUDES
+        async function deleteEvent(index) {
+            try {
+                const doc = await db.doc(AGENDA_DOC_PATH).get();
+                const events = doc.data().events;
+                events.splice(index, 1);
+                await db.doc(AGENDA_DOC_PATH).update({ events });
+            } catch(e) { alert("Error al borrar: " + e.message); }
+        }
+
+        async function deleteSolicitud(id) {
+            try {
+                const doc = await db.doc(SOLICITUDES_DOC_PATH).get();
+                const list = doc.data().list.filter(item => item.id !== id);
+                await db.doc(SOLICITUDES_DOC_PATH).update({ list });
+            } catch(e) { alert("Error al borrar: " + e.message); }
+        }
+
+        async function addShopItem(e) {
+            e.preventDefault();
+            try {
+                const newItem = {
+                    id: Date.now(),
+                    name: document.getElementById('shop-name').value,
+                    price: document.getElementById('shop-price').value,
+                    img: document.getElementById('shop-img').value,
+                    stock: document.getElementById('shop-stock').checked
+                };
+                await db.doc(SHOP_DOC_PATH).set({ items: firebase.firestore.FieldValue.arrayUnion(newItem) }, { merge: true });
+                e.target.reset();
+                alert("Artículo añadido al catálogo.");
+            } catch(err) {
+                console.error(err);
+                alert("Error al añadir: " + err.message);
+            }
+        }
+
+        async function deleteShopItem(index) {
+            try {
+                const doc = await db.doc(SHOP_DOC_PATH).get();
+                const items = doc.data().items;
+                items.splice(index, 1);
+                await db.doc(SHOP_DOC_PATH).update({ items });
+            } catch(e) { alert("Error al borrar: " + e.message); }
+        }
+        
+        // Formulario Público
         async function submitForm(e) {
             e.preventDefault();
-            if (!auth.currentUser) return alert("Esperando conexión...");
-
-            const name = document.getElementById('form-name').value;
-            const contact = document.getElementById('form-contact').value;
-            const type = document.getElementById('form-type').value;
-
+            if (!auth.currentUser) return alert("Error: No hay conexión con el servidor.");
             try {
                 await db.doc(SOLICITUDES_DOC_PATH).set({
                     list: firebase.firestore.FieldValue.arrayUnion({
                         id: Date.now(),
                         date: new Date().toLocaleDateString(),
-                        name,
-                        contact,
-                        type
+                        name: document.getElementById('form-name').value,
+                        contact: document.getElementById('form-contact').value,
+                        type: document.getElementById('form-type').value
                     })
                 }, { merge: true });
-
-                alert("¡Solicitud enviada con éxito!");
+                alert("Solicitud enviada.");
                 closeModal();
-                document.getElementById('form-name').value = "";
-                document.getElementById('form-contact').value = "";
-            } catch (error) {
-                console.error(error);
-                alert("Error al enviar.");
+                e.target.reset();
+            } catch(err) {
+                console.error(err);
+                alert("Error al enviar: " + err.message);
             }
         }
 
-        // 6. PANEL ADMIN
+        // Shop Modal
+        let shopUnsubscribe = null;
+        function openShopModal() {
+            document.getElementById('modal-shop').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            if (!shopUnsubscribe && auth.currentUser) {
+                shopUnsubscribe = db.doc(SHOP_DOC_PATH).onSnapshot(doc => {
+                    const c = document.getElementById('shop-container');
+                    if (doc.exists && doc.data().items?.length) {
+                        c.innerHTML = doc.data().items.map(i => `
+                            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition group">
+                                <div class="h-48 bg-gray-100 overflow-hidden relative"><img src="${i.img || 'https://via.placeholder.com/300'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">${!i.stock ? '<div class="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center"><span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">AGOTADO</span></div>' : ''}</div>
+                                <div class="p-4"><h4 class="font-serif font-bold text-blue-900 mb-1 leading-tight">${i.name}</h4><div class="flex justify-between items-center mt-3"><span class="text-amber-600 font-bold text-lg">${parseFloat(i.price).toFixed(2)} €</span><span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded border">${i.stock ? 'Disponible' : 'Sin Stock'}</span></div></div>
+                            </div>`).join('');
+                    } else { c.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500"><p>No hay artículos.</p></div>'; }
+                });
+            }
+        }
+        function closeShopModal() {
+            document.getElementById('modal-shop').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // UI Helpers
+        lucide.createIcons();
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+        
         function toggleAdminPanel() {
             const panel = document.getElementById('admin-panel');
-            if (panel.style.display === 'block') {
-                logoutAdmin();
-            } else {
+            if (panel.style.display === 'block') logoutAdmin();
+            else {
                 document.getElementById('modal-login').classList.remove('hidden');
                 document.getElementById('login-pin').value = '';
                 document.getElementById('login-pin').focus();
             }
         }
-
-        function closeLoginModal() {
-            document.getElementById('modal-login').classList.add('hidden');
-            document.getElementById('login-error').classList.add('hidden');
-        }
-
+        function closeLoginModal() { document.getElementById('modal-login').classList.add('hidden'); document.getElementById('login-error').classList.add('hidden'); }
         function checkLogin() {
-            const pin = document.getElementById('login-pin').value;
-            if (pin === "1650") {
+            if (document.getElementById('login-pin').value === "1650") {
                 closeLoginModal();
                 document.getElementById('admin-panel').style.display = 'block';
                 document.body.style.overflow = 'hidden';
                 loadAdminData();
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-            }
+            } else document.getElementById('login-error').classList.remove('hidden');
         }
-
-        function logoutAdmin() {
-            document.getElementById('admin-panel').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function showAdminTab(tab) {
-            // Ocultar todos
-            ['solicitudes', 'agenda', 'tienda'].forEach(t => {
-                document.getElementById(`admin-${t}`).classList.add('hidden');
-                document.getElementById(`tab-${t}`).classList.remove('border-blue-900', 'text-blue-900');
-                document.getElementById(`tab-${t}`).classList.add('text-gray-500');
-            });
-            
-            // Mostrar seleccionado
-            document.getElementById(`admin-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).classList.add('border-blue-900', 'text-blue-900');
-            document.getElementById(`tab-${tab}`).classList.remove('text-gray-500');
-        }
-
-        function loadAdminData() {
-            if (!auth.currentUser) return;
-
-            // 1. Solicitudes
-            db.doc(SOLICITUDES_DOC_PATH).onSnapshot(doc => {
-                const tbody = document.getElementById('solicitudes-table-body');
-                if (doc.exists && doc.data().list && doc.data().list.length > 0) {
-                    tbody.innerHTML = doc.data().list.map(item => `
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><p class="text-gray-900 whitespace-no-wrap">${item.date}</p></td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><p class="text-gray-900 font-bold">${item.name}</p></td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><p class="text-gray-900">${item.contact}</p></td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><span class="bg-blue-200 text-blue-900 py-1 px-3 rounded-full text-xs">${item.type}</span></td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><button onclick="deleteSolicitud(${item.id})" class="text-red-600 font-bold">Borrar</button></td>
-                        </tr>
-                    `).join('');
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500">No hay solicitudes.</td></tr>';
-                }
-            });
-
-            // 2. Agenda
-            db.doc(AGENDA_DOC_PATH).onSnapshot(doc => {
-                const list = document.getElementById('admin-agenda-list');
-                if (doc.exists && doc.data().events) {
-                    list.innerHTML = doc.data().events.map((evt, index) => `
-                        <li class="flex justify-between items-center bg-gray-50 p-3 rounded border">
-                            <span><strong>${evt.date} ${evt.month}</strong> - ${evt.title}</span>
-                            <button onclick="deleteEvent(${index})" class="text-red-500 hover:text-red-700 font-bold px-2">X</button>
-                        </li>
-                    `).join('');
-                }
-            });
-
-            // 3. Tienda (Admin)
-            db.doc(SHOP_DOC_PATH).onSnapshot(doc => {
-                const list = document.getElementById('admin-shop-list');
-                if (doc.exists && doc.data().items) {
-                    list.innerHTML = doc.data().items.map((item, index) => `
-                        <div class="flex justify-between items-center bg-gray-50 p-3 rounded border">
-                            <div class="flex items-center space-x-3">
-                                <img src="${item.img}" class="w-10 h-10 object-cover rounded border">
-                                <div>
-                                    <p class="font-bold text-gray-800">${item.name}</p>
-                                    <p class="text-xs text-gray-500">${item.price}€ - ${item.stock ? 'En Stock' : 'Agotado'}</p>
-                                </div>
-                            </div>
-                            <button onclick="deleteShopItem(${index})" class="text-red-500 hover:text-red-700 font-bold px-2">Borrar</button>
-                        </div>
-                    `).join('');
-                } else {
-                    list.innerHTML = '<p class="text-center text-gray-400">Sin productos.</p>';
-                }
-            });
-        }
-
-        // --- FUNCIONES DE ACCIÓN ADMIN ---
-
-        // Agenda
-        async function addEvent(e) {
-            e.preventDefault();
-            const newEvent = {
-                date: document.getElementById('evt-date').value,
-                month: document.getElementById('evt-month').value,
-                title: document.getElementById('evt-title').value,
-                desc: document.getElementById('evt-desc').value,
-            };
-            await db.doc(AGENDA_DOC_PATH).set({
-                events: firebase.firestore.FieldValue.arrayUnion(newEvent)
-            }, { merge: true });
-            e.target.reset();
-        }
-        async function deleteEvent(index) {
-            const doc = await db.doc(AGENDA_DOC_PATH).get();
-            const events = doc.data().events;
-            events.splice(index, 1);
-            await db.doc(AGENDA_DOC_PATH).update({ events });
-        }
-
-        // Solicitudes
-        async function deleteSolicitud(id) {
-            const doc = await db.doc(SOLICITUDES_DOC_PATH).get();
-            const list = doc.data().list.filter(item => item.id !== id);
-            await db.doc(SOLICITUDES_DOC_PATH).update({ list });
-        }
-
-        // Tienda
-        async function addShopItem(e) {
-            e.preventDefault();
-            const newItem = {
-                id: Date.now(),
-                name: document.getElementById('shop-name').value,
-                price: document.getElementById('shop-price').value,
-                img: document.getElementById('shop-img').value,
-                stock: document.getElementById('shop-stock').checked
-            };
-            // Usamos set con merge para crear el documento si no existe la primera vez
-            await db.doc(SHOP_DOC_PATH).set({
-                items: firebase.firestore.FieldValue.arrayUnion(newItem)
-            }, { merge: true });
-            e.target.reset();
-        }
-
-        async function deleteShopItem(index) {
-            const doc = await db.doc(SHOP_DOC_PATH).get();
-            const items = doc.data().items;
-            items.splice(index, 1);
-            await db.doc(SHOP_DOC_PATH).update({ items });
-        }
-
-        // UI & MAPAS
-        lucide.createIcons();
+        function logoutAdmin() { document.getElementById('admin-panel').style.display = 'none'; document.body.style.overflow = 'auto'; }
         
-        // --- CONFIGURACIÓN DEL MAPA ---
-        const map = L.map('mapa-procesion').setView([37.390, -4.766], 16); // Ajustado zoom y centro
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
-        
-        // --- CONFIGURACIÓN DEL RECORRIDO ---
-        const puntos = [
-            {lat: 37.388528,lng: -4.778821, nombre: "Santuario (Salida)"},
-            {lat: 37.388002,lng: -4.778811, nombre: "Calle Aguilar"},
-            {lat: 37.387663,lng: -4.777835, nombre: "Paseo del Romeral"},
-            {lat: 37.3885, lng: -4.7670, nombre: "Calle Don Gonzalo"},
-            {lat: 37.3915, lng: -4.7635, nombre: "Santuario (Encierro)"} 
-        ];
-
-        L.polyline(puntos.map(p => [p.lat, p.lng]), {color: '#1e3a8a', weight: 4}).addTo(map);
-        
-        puntos.forEach(p => {
-             L.circleMarker([p.lat, p.lng], {color: '#d4af37', radius: 6, fillOpacity: 1})
-              .bindPopup(p.nombre)
-              .addTo(map);
-        });
-
-        function openLightbox(el) { document.getElementById('lightbox-img').src = el.querySelector('img').src; document.getElementById('lightbox').classList.remove('hidden'); }
-        function closeLightbox() { document.getElementById('lightbox').classList.add('hidden'); }
         function openModal() { document.getElementById('modal-hermano').classList.remove('hidden'); }
         function closeModal() { document.getElementById('modal-hermano').classList.add('hidden'); }
-        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
-        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
-
-        const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); });
+        function openLightbox(el) { document.getElementById('lightbox-img').src = el.querySelector('img').src; document.getElementById('lightbox').classList.remove('hidden'); }
+        function closeLightbox() { document.getElementById('lightbox').classList.add('hidden'); }
+        
+        const observer = new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) en.target.classList.add('visible'); }));
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        
+        // Map
+        const map = L.map('mapa-procesion').setView([37.390, -4.766], 16);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+        const puntos = [{lat: 37.388528,lng: -4.778821, nombre: "Santuario"},{lat: 37.388002,lng: -4.778811, nombre: "C/ Aguilar"},{lat: 37.387663,lng: -4.777835, nombre: "Romeral"},{lat: 37.3885, lng: -4.7670, nombre: "Don Gonzalo"},{lat: 37.3915, lng: -4.7635, nombre: "Encierro"}];
+        L.polyline(puntos.map(p => [p.lat, p.lng]), {color: '#1e3a8a', weight: 4}).addTo(map);
+        puntos.forEach(p => L.circleMarker([p.lat, p.lng], {color: '#d4af37', radius: 6, fillOpacity: 1}).bindPopup(p.nombre).addTo(map));
     </script>
 </body>
 </html>
