@@ -80,6 +80,34 @@
             </div>
         </div>
     </nav>
+    <!-- CÓDIGO CUENTA ATRÁS -->
+<div class="bg-gray-900 text-amber-500 py-2 text-center font-serif text-sm border-b border-amber-600 fixed w-full top-20 z-40 shadow-lg">
+    <span class="mr-2">FALTAN PARA LA SALIDA:</span>
+    <span id="countdown" class="font-bold text-white tracking-widest">Calculando...</span>
+</div>
+
+<script>
+    // Pega esto AL FINAL DEL TODO, justo antes de cerrar </body>
+    setInterval(function() {
+        // Configura aquí la fecha de tu salida (Año, Mes-1, Día, Hora)
+        // Ojo: Los meses en JS van de 0 (Enero) a 11 (Diciembre). Diciembre es 11.
+        const targetDate = new Date(2024, 11, 8, 17, 0, 0).getTime(); 
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            document.getElementById("countdown").innerHTML = "¡ES EL DÍA!";
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+        document.getElementById("countdown").innerHTML = 
+            `${days}d ${hours}h ${minutes}m`;
+    }, 1000);
+</script>
 
     <!-- Hero -->
     <header id="inicio" class="hero-bg h-screen flex items-center justify-center relative text-center px-4">
