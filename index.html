@@ -1,5 +1,4 @@
-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -174,12 +173,13 @@
                     <button onclick="openModal()" class="w-full bg-blue-900 text-white py-2 rounded text-sm mb-2 hover:bg-blue-800">Solicitud Hermano</button>
                     <button class="w-full border border-blue-900 text-blue-900 py-2 rounded text-sm hover:bg-blue-50">Descargar Reglas</button>
                 </div>
-                <!-- Caridad -->
+                <!-- Caridad (MODIFICADO) -->
                 <div class="bg-slate-50 p-6 rounded-lg shadow border-t-4 border-red-500">
                     <div class="text-red-500 mb-4"><i data-lucide="heart-handshake" class="h-10 w-10"></i></div>
                     <h3 class="font-bold text-lg mb-2">Bolsa de Caridad</h3>
                     <div class="flex justify-between text-sm mb-2"><span>Campaña Navidad</span><span class="font-bold text-green-600">Activa</span></div>
-                    <button class="w-full bg-red-600 text-white py-2 rounded text-sm hover:bg-red-700">Donar (Bizum)</button>
+                    <!-- Nuevo botón -->
+                    <button onclick="openDonationModal()" class="w-full bg-red-600 text-white py-2 rounded text-sm hover:bg-red-700 font-bold transition">Hacer una donación</button>
                 </div>
                 <!-- Tienda -->
                 <div class="bg-slate-50 p-6 rounded-lg shadow border-t-4 border-amber-500 relative group overflow-hidden">
@@ -299,6 +299,34 @@
         </div>
     </div>
 
+    <!-- Modal Donación (NUEVO) -->
+    <div id="modal-donation" class="fixed inset-0 z-[60] hidden overflow-y-auto">
+        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 backdrop-blur-sm" onclick="closeDonationModal()"></div>
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-lg z-50 relative">
+                <div class="bg-red-600 px-4 py-3 flex justify-between items-center text-white">
+                    <h3 class="font-serif font-bold flex items-center gap-2"><i data-lucide="heart" class="w-5 h-5"></i> Realizar Donativo</h3>
+                    <button onclick="closeDonationModal()"><i data-lucide="x"></i></button>
+                </div>
+                <div class="p-6 text-center space-y-6">
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 shadow-sm">
+                        <p class="font-bold text-gray-600 mb-1">BIZUM</p>
+                        <p class="text-3xl font-bold text-red-600 tracking-wider font-mono">00334</p>
+                        <p class="text-xs text-gray-500 mt-2">Concepto: Donativo + Tu Nombre</p>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 shadow-sm">
+                        <p class="font-bold text-gray-600 mb-1">TRANSFERENCIA BANCARIA</p>
+                        <p class="text-lg font-mono font-bold text-slate-800 break-all">ES45 2100 1234 5678 9012 3456</p>
+                        <p class="text-xs text-gray-500 mt-2">Entidad: CaixaBank | Titular: Cofradía Purísima</p>
+                    </div>
+
+                    <p class="text-sm text-gray-500 italic mt-4">"Dios ama al que da con alegría" (2 Cor 9,7)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-shop" class="fixed inset-0 z-[70] hidden overflow-y-auto">
         <div class="fixed inset-0 bg-gray-900 bg-opacity-80 backdrop-blur-sm" onclick="closeShopModal()"></div>
         <div class="flex items-center justify-center min-h-screen px-4 py-8">
@@ -328,14 +356,15 @@
     <script>
         // --- PEGA AQUÍ TU CONFIGURACIÓN ---
         // Borra lo de abajo y pega tu const firebaseConfig = { ... }
-        const firebaseConfig = {
+       const firebaseConfig = {
   apiKey: "AIzaSyDWWnsHZDF-U0Gb3L93kSiORve22mUnuew",
   authDomain: "cofradia-web-63f3c.firebaseapp.com",
   projectId: "cofradia-web-63f3c",
   storageBucket: "cofradia-web-63f3c.firebasestorage.app",
   messagingSenderId: "819600967210",
   appId: "1:819600967210:web:9794003d21c953552a2553"
-        };
+};
+        
         // Inicialización
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
@@ -525,6 +554,10 @@
             document.body.style.overflow = 'auto';
         }
 
+        // --- FUNCIONES DONACIÓN ---
+        function openDonationModal() { document.getElementById('modal-donation').classList.remove('hidden'); }
+        function closeDonationModal() { document.getElementById('modal-donation').classList.add('hidden'); }
+
         // UI Helpers
         lucide.createIcons();
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
@@ -555,6 +588,34 @@
         function openLightbox(el) { document.getElementById('lightbox-img').src = el.querySelector('img').src; document.getElementById('lightbox').classList.remove('hidden'); }
         function closeLightbox() { document.getElementById('lightbox').classList.add('hidden'); }
         
+        // --- FUNCIÓN RECUPERADA PARA CAMBIAR PESTAÑAS ADMIN ---
+        function showAdminTab(tabId) {
+            const tabs = ['solicitudes', 'agenda', 'tienda'];
+            
+            tabs.forEach(t => {
+                // Ocultar contenido
+                const content = document.getElementById(`admin-${t}`);
+                if (content) content.classList.add('hidden');
+                
+                // Desactivar estilo botón
+                const btn = document.getElementById(`tab-${t}`);
+                if (btn) {
+                    btn.classList.remove('text-blue-900', 'border-b-4', 'border-blue-900');
+                    btn.classList.add('text-gray-500');
+                }
+            });
+
+            // Activar seleccionado
+            const activeContent = document.getElementById(`admin-${tabId}`);
+            if (activeContent) activeContent.classList.remove('hidden');
+            
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-500');
+                activeBtn.classList.add('text-blue-900', 'border-b-4', 'border-blue-900');
+            }
+        }
+
         const observer = new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) en.target.classList.add('visible'); }));
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
         
