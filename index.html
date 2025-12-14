@@ -427,7 +427,14 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // 1. CONFIGURACIÓN E INICIO FIREBASE
-        const firebaseConfig = JSON.parse(__firebase_config);
+        const firebaseConfig =  {
+              apiKey: "AIzaSyDWWnsHZDF-U0Gb3L93kSiORve22mUnuew",
+              authDomain: "cofradia-web-63f3c.firebaseapp.com",
+              projectId: "cofradia-web-63f3c",
+              storageBucket: "cofradia-web-63f3c.firebasestorage.app",
+              messagingSenderId: "819600967210",
+              appId: "1:819600967210:web:9794003d21c953552a2553"
+};
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore(app);
